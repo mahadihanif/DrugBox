@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "460861316602",
+    "project_id": "phone-verification-9fc2f",
+    "storage_bucket": "phone-verification-9fc2f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:460861316602:android:18d51623f5a160e45d1843",
+        "android_client_info": {
+          "package_name": "com.example.drugboxappv1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "460861316602-mcga3g266ncg3h0hmbu2qhnb3aa32ct9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.drugboxappv1",
+            "certificate_hash": "966422a79bfcf3695a3173531739af80befc8e33"
+          }
+        },
+        {
+          "client_id": "460861316602-kk01jsbio3a8flr62oe09rmk9bsltj90.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAI_I8kBjKDwz-FIbbBEhX6iwWLXq2E3DM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "460861316602-kk01jsbio3a8flr62oe09rmk9bsltj90.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
