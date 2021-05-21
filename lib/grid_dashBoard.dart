@@ -1,3 +1,4 @@
+import 'package:drugboxappv1/Views/alarm_screen.dart';
 import 'package:drugboxappv1/Views/search_medicine_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -109,7 +110,7 @@ class _DashBoardState extends State<DashBoard> {
           }),
           myItems(Icons.alarm, "Medicine Alarm", 0xFF308DB8, () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => MyMedicine()));
+                context, MaterialPageRoute(builder: (context) => AlarmScreen()));
           }),
           myItems(Icons.calculate, "Calculator", 0xFF79AD17, () {
             Navigator.push(

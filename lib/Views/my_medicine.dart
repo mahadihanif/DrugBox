@@ -6,7 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:page_transition/page_transition.dart';
 
-import 'detail_screen.dart';
 
 class MyMedicine extends StatefulWidget {
   @override
@@ -182,6 +181,7 @@ class _MyMedicineState extends State<MyMedicine> {
                         ],
                       ),
                     ),
+                    
                   ],
                 ),
               ),

@@ -2,12 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-
 class DetailedScreen extends StatefulWidget {
   final QueryDocumentSnapshot queryDocumentSnapshot;
 
   DetailedScreen({this.queryDocumentSnapshot});
-  
+
   @override
   _DetailedScreenState createState() => _DetailedScreenState();
 }
@@ -24,30 +23,23 @@ class _DetailedScreenState extends State<DetailedScreen> {
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
         elevation: 0.0,
-        
-        
-        
       ),
       body: SafeArea(
-        
-              child:
-                Container(
-            color: Color(0xFFF6F8FC),
-            child: Column(
-              children: [
-        Flexible(flex: 2, child: topContainer()),
-        SizedBox(
-          height: 10,
-        ),
-        Flexible(
-          flex: 8,
-          child: bottomContainer(),
-        ),
-              ],
+          child: Container(
+        color: Color(0xFFF6F8FC),
+        child: Column(
+          children: [
+            Flexible(flex: 2, child: topContainer()),
+            SizedBox(
+              height: 10,
             ),
-          )
-              
-      ),
+            Flexible(
+              flex: 8,
+              child: bottomContainer(),
+            ),
+          ],
+        ),
+      )),
     );
   }
 
@@ -106,7 +98,7 @@ class _DetailedScreenState extends State<DetailedScreen> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left:8.0),
+                      padding: const EdgeInsets.only(left: 8.0),
                       child: Text(
                         widget.queryDocumentSnapshot['strength'],
                         style: TextStyle(
@@ -143,8 +135,6 @@ class _DetailedScreenState extends State<DetailedScreen> {
         ],
       ),
     );
-
-   
   }
 
   Widget bottomContainer() {
@@ -199,11 +189,11 @@ class _DetailedScreenState extends State<DetailedScreen> {
             Row(
               children: [
                 Icon(IconData(
-                  0x09F3 ,fontFamily: "Ic",)
-                  ),
-                  
+                  0x09F3,
+                  fontFamily: "Ic",
+                )),
                 Padding(
-                  padding: const EdgeInsets.only(left:1.5),
+                  padding: const EdgeInsets.only(left: 1.5),
                   child: Text(
                     widget.queryDocumentSnapshot['unit_price'] + " Taka",
                     style: TextStyle(
@@ -214,12 +204,10 @@ class _DetailedScreenState extends State<DetailedScreen> {
                 ),
               ],
             ),
-
             SizedBox(
               height: 10,
             ),
             Divider(),
-
             Text(
               "Indications",
               style: TextStyle(
@@ -229,21 +217,19 @@ class _DetailedScreenState extends State<DetailedScreen> {
               ),
             ),
             Padding(
-                  padding: const EdgeInsets.only(left:1.5),
-                  child: Text(
-                    widget.queryDocumentSnapshot["indications"] ,
-                    style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black),
-                  ),
-                ),
-                SizedBox(
+              padding: const EdgeInsets.only(left: 1.5),
+              child: Text(
+                widget.queryDocumentSnapshot["indications"],
+                style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black),
+              ),
+            ),
+            SizedBox(
               height: 10,
             ),
             Divider(),
-
-
             Text(
               "Side Effects",
               style: TextStyle(
@@ -253,20 +239,19 @@ class _DetailedScreenState extends State<DetailedScreen> {
               ),
             ),
             Padding(
-                  padding: const EdgeInsets.only(left:1.5),
-                  child: Text(
-                    widget.queryDocumentSnapshot["side_effects"] ,
-                    style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black),
-                  ),
-                ),
-                SizedBox(
+              padding: const EdgeInsets.only(left: 1.5),
+              child: Text(
+                widget.queryDocumentSnapshot["side_effects"],
+                style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black),
+              ),
+            ),
+            SizedBox(
               height: 10,
             ),
             Divider(),
-
           ],
         ),
       ),
@@ -319,7 +304,9 @@ class _DetailedScreenState extends State<DetailedScreen> {
     firestoreInstance
         .collection("UserItems")
         .doc(firebaseUser.uid)
-        .collection('MyMedicine').doc(widget.queryDocumentSnapshot.id).set({
+        .collection('MyMedicine')
+        .doc(widget.queryDocumentSnapshot.id)
+        .set({
       "title": widget.queryDocumentSnapshot['title'],
       "subtitle": widget.queryDocumentSnapshot['subtitle'],
       "md_icon ": widget.queryDocumentSnapshot['md_icon'],
