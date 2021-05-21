@@ -100,13 +100,13 @@ class _MyMedicineState extends State<MyMedicine> {
         padding: const EdgeInsets.all(4.0),
         child: GestureDetector(
           onTap: () {
-            Navigator.push(
-                context,
-                PageTransition(
-                    child: DetailedScreen2(
-                      queryDocumentSnapshot: medicineList.data[index],
-                    ),
-                    type: PageTransitionType.fade));
+            // Navigator.push(
+            //     context,
+            //     PageTransition(
+            //         child: DetailedScreen2(
+            //           queryDocumentSnapshot: medicineList.data[index],
+            //         ),
+            //         type: PageTransitionType.fade));
           },
           child: Card(
             shape:
