@@ -1,6 +1,7 @@
 import 'package:drugboxappv1/Helpers/Headers.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 
 class SearchMedicine extends StatefulWidget {
   @override
@@ -8,10 +9,45 @@ class SearchMedicine extends StatefulWidget {
 }
 
 class _SearchMedicineState extends State<SearchMedicine> {
+  TextEditingController searchController = TextEditingController();
+  Future resultsLoaded;
+  List altResults = [];
+
+  @override
+  void initState() {
+    super.initState();
+    searchController.addListener(onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    searchController.removeListener(onSearchChanged);
+    searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    resultsLoaded = getMedicineDocs();
+  }
+
+  onSearchChanged() {
+    print(searchController.text);
+  }
+
+  getMedicineDocs() async {
+    final uid = await Provider.of(context).auth.getCurrentUID();
+    var data = await FirebaseFirestore.instance.collection('medicine').get();
+    setState(() {
+      altResults = data.docs;
+    });
+    return "complete";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       appBar: AppBar(
         title: Center(child: Text('Search Medicine | DrugBox')),
         backgroundColor: Colors.deepPurple,
@@ -29,19 +65,36 @@ class _SearchMedicineState extends State<SearchMedicine> {
           null,
           0,
         ),
-        
       ),
-      
-      
 
       // backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        
+      body: 
+      SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: Column(
             children: [
-              Headers().searchBar(context),
+              // TextField(
+              //   controller: searchController,
+              //   decoration: InputDecoration(
+              //       prefixIcon: Icon(Icons.search),
+              //       hintText: 'Write medicine name',
+              //       hintStyle: TextStyle(color: Colors.grey),
+              //       border: OutlineInputBorder(
+              //           borderRadius: BorderRadius.circular(10.0)),
+              //       suffixIcon: IconButton(
+              //         icon: Icon(Icons.clear),
+              //         onPressed: () => searchController.clear(),
+              //       )),
+              // ),
+              // Expanded(
+              //     child: ListView.builder(
+              //   itemCount: altResults.length,
+              //   itemBuilder: (BuildContext context, int index) =>
+              //       buildTripCard(context, altResults[index]),
+              // )),
+
+              // Headers().searchBar(context),
               Headers().medicineList(context, 'medicine'),
             ],
           ),

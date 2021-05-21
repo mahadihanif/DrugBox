@@ -7,29 +7,31 @@ import 'package:provider/provider.dart';
 import 'package:drugboxappv1/Services/ManageData.dart';
 
 class Headers extends ChangeNotifier {
- TextEditingController searchController  = TextEditingController();
+  
 
-  Widget searchBar(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(2, 0, 2, 8.0),
-      child: Column(
-        children: [
-          TextField(
-            controller: searchController,
-            decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search),
-                hintText: 'Write medicine name',
-                hintStyle: TextStyle(color: Colors.grey),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0)),
-                suffixIcon: IconButton(
-                    icon: Icon(Icons.clear),
-                    onPressed: () => searchController.clear(),)),
-          ),
-        ],
-      ),
-    );
-  }
+
+  // Widget searchBar(BuildContext context) {
+  //   return Padding(
+  //     padding: EdgeInsets.fromLTRB(2, 0, 2, 8.0),
+  //     child: Column(
+  //       children: [
+  //         TextField(
+  //           controller: searchController,
+  //           decoration: InputDecoration(
+  //               prefixIcon: Icon(Icons.search),
+  //               hintText: 'Write medicine name',
+  //               hintStyle: TextStyle(color: Colors.grey),
+  //               border: OutlineInputBorder(
+  //                   borderRadius: BorderRadius.circular(10.0)),
+  //               suffixIcon: IconButton(
+  //                 icon: Icon(Icons.clear),
+  //                 onPressed: () => searchController.clear(),
+  //               )),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget medicineList(BuildContext context, String collection) {
     return Container(

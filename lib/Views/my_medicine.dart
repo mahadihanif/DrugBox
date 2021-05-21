@@ -100,14 +100,13 @@ class _MyMedicineState extends State<MyMedicine> {
         padding: const EdgeInsets.all(4.0),
         child: GestureDetector(
           onTap: () {
-            
-            // Navigator.push(
-            //     context,
-            //     PageTransition(
-            //         child: DetailedScreen2(
-            //           queryDocumentSnapshot: medicineList.data[index],
-            //         ),
-            //         type: PageTransitionType.fade));
+            Navigator.push(
+                context,
+                PageTransition(
+                    child: DetailedScreen2(
+                      queryDocumentSnapshot: medicineList.data[index],
+                    ),
+                    type: PageTransitionType.fade));
           },
           child: Card(
             shape:
@@ -137,6 +136,22 @@ class _MyMedicineState extends State<MyMedicine> {
                             medicineList['strength'],
                             style: TextStyle(fontSize: 16.0),
                           ),
+                          Spacer(),
+                          IconButton(
+                              icon: Icon(Icons.remove_circle),
+                              onPressed: () {
+                                var firebaseUser =
+                                    FirebaseAuth.instance.currentUser;
+                                firestoreInstance
+                                    .collection("UserItems")
+                                    .doc(firebaseUser.uid)
+                                    .collection("MyMedicine")
+                                    .doc(medicineList.id)
+                                    .delete()
+                                    .then((_) {
+                                  print("success!");
+                                });
+                              })
                         ],
                       ),
                     ),
@@ -160,7 +175,6 @@ class _MyMedicineState extends State<MyMedicine> {
                             medicineList['generic_name'],
                             style: TextStyle(fontSize: 18.0),
                           ),
-
                           // Text(
                           //   medicineList.id,
                           //   style: TextStyle(fontSize: 18.0),

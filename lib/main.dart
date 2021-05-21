@@ -1,3 +1,5 @@
+import 'package:drugboxappv1/Providers/searchScreenNew.dart';
+
 import 'Helpers/Headers.dart';
 import 'Services/ManageData.dart';
 import 'package:drugboxappv1/Views/splash_screen.dart';
@@ -39,6 +41,7 @@ class MyApp extends StatelessWidget {
 
               //   ],
               // ) 
+              
               SplashScreen()
           // SearchMedicine()
           // HomeScreen()
