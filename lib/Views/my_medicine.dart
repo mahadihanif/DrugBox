@@ -1,11 +1,9 @@
-import 'dart:collection';
-
-import 'package:drugboxappv1/Views/detail_screen2.dart';
+import 'package:drugboxappv1/Views/search_medicine_screen.dart';
+import 'package:drugboxappv1/Views/myMedicineDetailedScreen.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:page_transition/page_transition.dart';
-
 
 class MyMedicine extends StatefulWidget {
   @override
@@ -39,7 +37,7 @@ class _MyMedicineState extends State<MyMedicine> {
       body: Container(
           child: StreamBuilder(
         stream: getUsersMedicineList(context),
-        builder: (context, snapshot) {
+        builder: (BuildContext context,AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
             return Container(
               color: Color(0xFFF6F8FC),
@@ -76,6 +74,18 @@ class _MyMedicineState extends State<MyMedicine> {
           }
         },
       )),
+      floatingActionButton: FloatingActionButton(
+        elevation: 4,
+        child: Icon(
+          Icons.add,
+        ),
+        onPressed: () {
+          Navigator.push(
+              context,
+              PageTransition(
+                  child: SearchMedicine(), type: PageTransitionType.fade));
+        },
+      ),
     );
   }
 
@@ -93,19 +103,19 @@ class _MyMedicineState extends State<MyMedicine> {
   }
 
   Widget buildMyMedicineCard(
-      BuildContext context, DocumentSnapshot medicineList) {
+      BuildContext context, QueryDocumentSnapshot medicineList) {
     return new Container(
       child: Padding(
         padding: const EdgeInsets.all(4.0),
         child: GestureDetector(
           onTap: () {
-            // Navigator.push(
-            //     context,
-            //     PageTransition(
-            //         child: DetailedScreen2(
-            //           queryDocumentSnapshot: medicineList.data[index],
-            //         ),
-            //         type: PageTransitionType.fade));
+
+            
+            Navigator.push(
+                context,
+                PageTransition(
+                    child: DetailedScreen1(queryDocumentSnapshot:medicineList), type: PageTransitionType.fade));
+            
           },
           child: Card(
             shape:
@@ -174,14 +184,10 @@ class _MyMedicineState extends State<MyMedicine> {
                             medicineList['generic_name'],
                             style: TextStyle(fontSize: 18.0),
                           ),
-                          // Text(
-                          //   medicineList.id,
-                          //   style: TextStyle(fontSize: 18.0),
-                          // ),
+                          
                         ],
                       ),
                     ),
-                    
                   ],
                 ),
               ),
