@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:drugboxappv1/Views/my_medicine.dart';
+import 'package:google_fonts/google_fonts.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
 class DashBoard extends StatefulWidget {
@@ -65,6 +66,24 @@ class _DashBoardState extends State<DashBoard> {
     );
   }
 
+  String greetingMessage(){
+
+  var timeNow = DateTime.now().hour;
+  
+  if (timeNow <= 12) {
+    return 'Good Morning!';
+  } 
+  else if ((timeNow > 12) && (timeNow <= 15)) {
+  return 'Good Noon!';
+  }else if ((timeNow > 15) && (timeNow <= 17)) {
+  return 'Good Afternoon!';
+  } else if ((timeNow > 17) && (timeNow < 20)) {
+  return 'Good Evening!';
+  } else {
+  return 'Good Night!';
+  }
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,8 +97,8 @@ class _DashBoardState extends State<DashBoard> {
           Container(
             child: Center(
               child: Text(
-                "Good Morning!",
-                style: TextStyle(fontSize: 28, letterSpacing: 4.0),
+                greetingMessage(),
+                style:GoogleFonts.lato(textStyle:TextStyle(fontSize: 28, letterSpacing: 3.0),) 
               ),
             ),
           ),

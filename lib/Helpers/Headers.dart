@@ -7,9 +7,6 @@ import 'package:provider/provider.dart';
 import 'package:drugboxappv1/Services/ManageData.dart';
 
 class Headers extends ChangeNotifier {
-  
-
-
   // Widget searchBar(BuildContext context) {
   //   return Padding(
   //     padding: EdgeInsets.fromLTRB(2, 0, 2, 8.0),
@@ -138,3 +135,5 @@ class Headers extends ChangeNotifier {
     );
   }
 }
+
+

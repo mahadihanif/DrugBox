@@ -1,5 +1,6 @@
 import 'package:drugboxappv1/Views/add_new_alarm.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 
 class AlarmScreen extends StatefulWidget {
@@ -76,23 +77,37 @@ class TopContainer extends StatelessWidget {
             padding: EdgeInsets.only(
               bottom: 10,
             ),
-            child: Text(
-              "Medicine \n Alarm",
-              style: TextStyle(
-                fontFamily: "Angel",
-                fontSize: 20,
-                color: Colors.white,
-              ),
+            child: Column(
+              children: [
+                Text(
+                  "Medicine",
+                  style: TextStyle(
+                    fontFamily: "Angel",
+                    fontSize: 32,
+                    color: Colors.white,
+                    letterSpacing: 1.5,
+                  ),
+                ),
+                Text(
+                  "Alarm",
+                  style:GoogleFonts.lato(textStyle:TextStyle(
+                    fontFamily: "Angel",
+                    fontSize: 32,
+                    color: Colors.white,
+                    letterSpacing: 1.5,
+                  ),)
+                ),
+              ],
             ),
           ),
           Divider(
-            color: Color(0xFFB0F3CB),
+            color: Color(0xFF939B96),
           ),
           Padding(
             padding: EdgeInsets.only(top: 12.0),
             child: Center(
               child: Text(
-                "Number of Mediminders",
+                "Number of Medicine Reminder",
                 style: TextStyle(
                   fontSize: 17,
                   color: Colors.white,

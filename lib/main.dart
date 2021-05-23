@@ -1,4 +1,6 @@
 
+import 'package:drugboxappv1/Helpers/MultipleNotifire.dart';
+
 import 'Helpers/Headers.dart';
 import 'Services/ManageData.dart';
 import 'package:drugboxappv1/Views/splash_screen.dart';
@@ -23,6 +25,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(value: Headers()),
         ChangeNotifierProvider.value(value: ManageData()),
+        // ChangeNotifierProvider.value(value: MultipleNotifire({ })),
+        // ChangeNotifierProvider<MultipleNotifire>(create: (_)=> MultipleNotifire({})),
+        
       ],
       child: MaterialApp(
           title: 'DrugBox',

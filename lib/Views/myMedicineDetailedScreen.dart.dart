@@ -1,8 +1,6 @@
 import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drugboxappv1/Views/add_new_alarm.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -50,7 +48,6 @@ class _DetailedScreenState extends State<DetailedScreen1> {
 
   Widget topContainer() {
     var medType = widget.queryDocumentSnapshot['subtitle'];
-    print(medType);
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
