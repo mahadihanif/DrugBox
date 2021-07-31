@@ -1,19 +1,57 @@
 import 'dart:ffi';
-
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:multi_select_flutter/bottom_sheet/multi_select_bottom_sheet_field.dart';
+import 'package:multi_select_flutter/chip_display/multi_select_chip_display.dart';
+import 'package:multi_select_flutter/util/multi_select_item.dart';
+import 'package:multi_select_flutter/util/multi_select_list_type.dart';
+import 'package:provider/provider.dart';
+import '../main.dart';
+
+class MedicineSchedule {
+  int id;
+  String name;
+
+  MedicineSchedule({this.id, this.name});
+}
 
 class AddAlarm extends StatefulWidget {
+  AddAlarm({Key key, this.title}) : super(key: key);
+  final String title;
   @override
   _AddAlarmState createState() => _AddAlarmState();
 }
 
 class _AddAlarmState extends State<AddAlarm> {
   String frequencyChoose = "Once a day";
-  String dateGroupValue = "";
-  TimeOfDay _time1;
-  TimeOfDay _time2;
-  TimeOfDay _time3;
+  // String dateGroupValue;
+  
+
+  TimeOfDay _time1 = TimeOfDay.now();
+  TimeOfDay _time2 = TimeOfDay.now();
+  TimeOfDay _time3 = TimeOfDay.now();
   DateTime _date = DateTime.now();
+
+  static List<MedicineSchedule> _days = [
+    MedicineSchedule(id: 1, name: "Saturday"),
+    MedicineSchedule(id: 2, name: "Sunday"),
+    MedicineSchedule(id: 3, name: "Monday"),
+    MedicineSchedule(id: 4, name: "Tuesday"),
+    MedicineSchedule(id: 5, name: "Wednesday"),
+    MedicineSchedule(id: 6, name: "Thursday"),
+    MedicineSchedule(id: 7, name: "Friday"),
+  ];
+
+  final _items = _days
+      .map((item) => MultiSelectItem<MedicineSchedule>(item, item.name))
+      .toList();
+  List<MedicineSchedule> _selectedItems2 = [];
+  List<MedicineSchedule> _selectedItems3 = [];
+  final _multiSelectKey = GlobalKey<FormFieldState>();
+  // ignore: non_constant_identifier_names
+  String HintText = "Select a day";
+
   List frequency = [
     "Once a day",
     "Twice a day",
@@ -23,16 +61,18 @@ class _AddAlarmState extends State<AddAlarm> {
   @override
   void initState() {
     super.initState();
-    _time1 = TimeOfDay.now();
-    _time2 = TimeOfDay.now();
-    _time3 = TimeOfDay.now();
+    // Provider.of<NotificationService>(context, listen: false).initialize();
+    super.initState();
+    // _time1 = TimeOfDay.now();
+    // _time2 = TimeOfDay.now();
+    // _time3 = TimeOfDay.now();
   }
 
   Future<Void> selectDate(BuildContext context) async {
     DateTime datePicker = await showDatePicker(
         context: context,
         initialDate: _date,
-        firstDate: DateTime(2020),
+        firstDate: DateTime(2021),
         lastDate: DateTime(2030));
   }
 
@@ -169,34 +209,78 @@ class _AddAlarmState extends State<AddAlarm> {
                   Divider(
                     color: Colors.black,
                   ),
-                  Text(
-                    "Here will be the time function",
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 22),
+                  MultiSelectBottomSheetField<MedicineSchedule>(
+                    initialChildSize: 0.7,
+                    maxChildSize: 0.95,
+                    listType: MultiSelectListType.CHIP,
+                    checkColor: Colors.pink,
+                    selectedColor: Colors.pink,
+                    selectedItemsTextStyle: TextStyle(
+                      fontSize: 25,
+                      color: Colors.white,
+                    ),
+                    unselectedColor: Colors.greenAccent[200],
+                    buttonIcon: Icon(
+                      Icons.add,
+                      color: Colors.pinkAccent,
+                    ),
+                    searchHintStyle: TextStyle(
+                      fontSize: 20,
+                    ),
+                    searchable: false,
+                    buttonText: Text(
+                      '$HintText',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.black,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 5,
+                    ),
+                    title: Text(
+                      "Days",
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.pink,
+                      ),
+                    ),
+                    items: _items,
+                    onConfirm: (values) {
+                      setState(() {
+                        _selectedItems2 = values;
+                      });
+                      // print('selected : ${_selectedItems2}');
+
+                      _selectedItems2
+                          .forEach((item) => print("${item.id} ${item.name}"));
+                      /*senduserdata(
+                    'partnerreligion', '${_selectedItems2.toString()}');*/
+                    },
+                    chipDisplay: MultiSelectChipDisplay(
+                      textStyle: TextStyle(
+                        fontSize: 18,
+                        color: Colors.black,
+                      ),
+                      onTap: (value) {
+                        setState(() {
+                          _selectedItems2.remove(value);
+                        });
+
+                        // print('removed: ${_selectedItems2.toString()}');
+                      },
+                    ),
                   ),
-                  Row(
-                    children: [
-                      Radio(
-                          value: "everyday",
-                          groupValue: dateGroupValue,
-                          onChanged: (val) {
-                            dateGroupValue = val;
-                            setState(() {});
-                          }),
-                      Text("Everyday")
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Radio(
-                          value: "customDay",
-                          groupValue: dateGroupValue,
-                          onChanged: (val) {
-                            dateGroupValue = val;
-                            setState(() {});
-                          }),
-                      Text("Weekly Specific day")
-                    ],
-                  )
+                  _selectedItems2 == null || _selectedItems2.isEmpty
+                      ? MultiSelectChipDisplay(
+                          onTap: (item) {
+                            setState(() {
+                              _selectedItems3.remove(item);
+                              // print('removed below: ${_selectedItems3.toString()}');
+                            });
+                            _multiSelectKey.currentState.validate();
+                          },
+                        )
+                      : MultiSelectChipDisplay(),
                 ],
               ),
             ),
@@ -207,7 +291,9 @@ class _AddAlarmState extends State<AddAlarm> {
         elevation: 4,
         // backgroundColor: Colors.black,
         child: Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () {
+          scheduleAlarm();
+        },
       ),
     );
   }
@@ -276,7 +362,6 @@ class _AddAlarmState extends State<AddAlarm> {
               ],
             ),
           ),
-
           InkWell(
             onTap: () {
               pickTime2();
@@ -294,7 +379,6 @@ class _AddAlarmState extends State<AddAlarm> {
               ],
             ),
           ),
-
           InkWell(
             onTap: () {
               pickTime3();
@@ -312,13 +396,12 @@ class _AddAlarmState extends State<AddAlarm> {
               ],
             ),
           ),
-          
         ],
       );
     } else {
       return Column(
         children: [
-           InkWell(
+          InkWell(
             onTap: () {
               pickTime1();
             },
@@ -335,8 +418,7 @@ class _AddAlarmState extends State<AddAlarm> {
               ],
             ),
           ),
-
-           InkWell(
+          InkWell(
             onTap: () {
               pickTime2();
             },
@@ -353,18 +435,12 @@ class _AddAlarmState extends State<AddAlarm> {
               ],
             ),
           ),
-
-
         ],
       );
     }
   }
 
-
-
-
-
-///////////////////////*****/ time takeing method *****///////////////
+  ///////////////////////*****/ time takeing method *****///////////////
 
   pickTime1() async {
     TimeOfDay time = await showTimePicker(
@@ -373,13 +449,13 @@ class _AddAlarmState extends State<AddAlarm> {
         builder: (BuildContext context, Widget child) {
           return Theme(
             data: ThemeData(
-                // primaryColor: Colors.purpleAccent,
-                // accentColor: Colors.amber,
+                primaryColor: Color(0xFFC41A3B),
+                accentColor: Color(0xFFC41A3B),
 
                 ),
             child: MediaQuery(
                 data: MediaQuery.of(context)
-                    .copyWith(alwaysUse24HourFormat: false),
+                    .copyWith(alwaysUse24HourFormat: true),
                 child: child),
           );
         });
@@ -436,5 +512,39 @@ class _AddAlarmState extends State<AddAlarm> {
       setState(() {
         _time3 = time;
       });
+  }
+
+  void scheduleAlarm(DateTime scheduledNotificationDateTime) async {
+    var scheduledNotificationDateTime =
+        DateTime.now().add(Duration(seconds: 5));
+    var vibrationPattern = Int64List(4);
+    vibrationPattern[0] = 0;
+    vibrationPattern[1] = 1000;
+    vibrationPattern[2] = 5000;
+    vibrationPattern[3] = 2000;
+
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'alarm_notif',
+      'alarm_notif',
+      'Channel for Alarm notification',
+      icon: 'flutter_icon',
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
+      largeIcon: DrawableResourceAndroidBitmap('flutter_icon'),
+    );
+
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+        sound: 'a_long_cold_sting.wav',
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true);
+    var platformChannelSpecifics = NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.schedule(
+        0,
+        'Office',
+        'Good morning! Time for office.',
+        scheduledNotificationDateTime,
+        platformChannelSpecifics);
   }
 }

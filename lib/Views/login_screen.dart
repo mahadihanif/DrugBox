@@ -15,7 +15,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   MobileVerificationState currentState =
       MobileVerificationState.SHOW_MOBILE_FORM_STATE;
-      
+
   // final firestoreInstance = FirebaseFirestore.instance;
 
   final phoneController = TextEditingController();
@@ -71,8 +71,16 @@ class _LoginScreenState extends State<LoginScreen> {
         // ),
         TextField(
           controller: phoneController,
+          keyboardType: TextInputType.phone,
           decoration: InputDecoration(
             hintText: "Phone Number",
+            contentPadding: const EdgeInsets.symmetric(vertical: 19, horizontal: 8),
+            prefixIcon: Padding(padding: const EdgeInsets.symmetric(vertical: 19.0,horizontal: 8),
+            child: Text(
+              " (+88) ",
+              style: TextStyle(color: Colors.black),
+            ), 
+            )
           ),
         ),
         SizedBox(
@@ -85,7 +93,8 @@ class _LoginScreenState extends State<LoginScreen> {
             });
 
             await _auth.verifyPhoneNumber(
-              phoneNumber: phoneController.text,
+              phoneNumber: "+88"+phoneController.text,
+              // phoneNumber:phoneController.text,
               verificationCompleted: (phoneAuthCredential) async {
                 setState(() {
                   showLoading = false;
@@ -124,6 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Spacer(),
         TextField(
           controller: otpController,
+          keyboardType: TextInputType.phone,
           decoration: InputDecoration(
             hintText: "Enter OTP",
           ),
@@ -147,7 +157,6 @@ class _LoginScreenState extends State<LoginScreen> {
             //   "phone": phoneController.text,
             //   "medicineList": FieldValue.arrayUnion(['Empty List'])
             // }).then((_) => print('user created'));
-
           },
           child: Text("VERIFY"),
           color: Colors.blue,
@@ -174,5 +183,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   : getOtpFormWidget(context),
           padding: const EdgeInsets.all(16),
         ));
+  }
+
+  Widget countryCard() {
+    return Container(
+      width: MediaQuery.of(context).size.width/1.5,
+      padding: EdgeInsets.symmetric(vertical: 5.0),
+
+    );
   }
 }

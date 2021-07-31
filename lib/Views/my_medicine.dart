@@ -1,5 +1,5 @@
 import 'package:drugboxappv1/Views/search_medicine_screen.dart';
-import 'package:drugboxappv1/Views/myMedicineDetailedScreen.dart.dart';
+import 'package:drugboxappv1/Views/myMedicineDetailedScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,10 +12,12 @@ class MyMedicine extends StatefulWidget {
 
 class _MyMedicineState extends State<MyMedicine> {
   final firestoreInstance = FirebaseFirestore.instance;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Center(child: Text('My Medicine')),
         backgroundColor: Colors.deepPurple,
@@ -74,16 +76,28 @@ class _MyMedicineState extends State<MyMedicine> {
           }
         },
       )),
+      
       floatingActionButton: FloatingActionButton(
         elevation: 4,
         child: Icon(
           Icons.add,
         ),
         onPressed: () {
-          Navigator.push(
-              context,
-              PageTransition(
-                  child: SearchMedicine(), type: PageTransitionType.fade));
+          var firebaseUser = FirebaseAuth.instance;
+
+              if (firebaseUser.currentUser != null) {
+                return Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SearchMedicine()));
+              } else {
+                _scaffoldKey.currentState.showSnackBar(
+                    SnackBar(content: Text("Please login first"),
+                    duration: Duration(seconds: 3),));
+               
+              }
+          // Navigator.push(
+          //     context,
+          //     PageTransition(
+          //         child: SearchMedicine(), type: PageTransitionType.fade));
         },
       ),
     );

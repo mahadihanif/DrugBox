@@ -30,7 +30,9 @@ class Headers extends ChangeNotifier {
   //   );
   // }
 
-  Widget medicineList(BuildContext context, String collection) {
+  Widget medicineList(BuildContext context, String collection)
+    
+   {
     return Container(
       height: 700,
       child: FutureBuilder(
@@ -46,6 +48,7 @@ class Headers extends ChangeNotifier {
             ));
           }
           return ListView.builder(
+            
             scrollDirection: Axis.vertical,
             itemCount: snapshot.data.length,
             itemBuilder: (BuildContext context, int index) {
@@ -60,16 +63,28 @@ class Headers extends ChangeNotifier {
                           type: PageTransitionType.fade));
                 },
                 child: Row(
+                  
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
-                          Image.network(
-                            snapshot.data[index].data()['md_icon'],
+                          if (snapshot.data[index].data()['subtitle'] != "Capsule")
+                            Image.asset("assets/images/round_tablets.png",
                             height: 30,
                             width: 30,
-                          ),
+                            )
+                          else
+                            Image.asset(
+                              "assets/images/capsule.png",
+                             height: 30,
+                             width: 30,
+                            ), 
+                          // Image.network(
+                          //   snapshot.data[index].data()['md_icon'],
+                          //   height: 30,
+                          //   width: 30,
+                          // ),
                           Text(
                             snapshot.data[index].data()['subtitle'],
                             style: TextStyle(

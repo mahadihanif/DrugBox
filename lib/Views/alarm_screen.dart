@@ -1,4 +1,5 @@
 import 'package:drugboxappv1/Views/add_new_alarm.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
@@ -9,6 +10,7 @@ class AlarmScreen extends StatefulWidget {
 }
 
 class _AlarmScreenState extends State<AlarmScreen> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   void initState() {
     super.initState();
   }
@@ -16,6 +18,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
         elevation: 0.0,
@@ -42,10 +45,21 @@ class _AlarmScreenState extends State<AlarmScreen> {
           Icons.add,
         ),
         onPressed: () {
-          Navigator.push(
-              context,
-              PageTransition(
-                  child: AddAlarm(), type: PageTransitionType.fade));
+          var firebaseUser = FirebaseAuth.instance;
+
+              if (firebaseUser.currentUser != null) {
+                return Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AddAlarm()));
+              } else {
+                _scaffoldKey.currentState.showSnackBar(
+                    SnackBar(content: Text("Please login first"),
+                    duration: Duration(seconds: 3),));
+               
+              }
+          // Navigator.push(
+          //     context,
+          //     PageTransition(
+          //         child: AddAlarm(), type: PageTransitionType.fade));
         },
       ),
     );
@@ -90,12 +104,11 @@ class TopContainer extends StatelessWidget {
                 ),
                 Text(
                   "Alarm",
-                  style:GoogleFonts.lato(textStyle:TextStyle(
-                    fontFamily: "Angel",
+                  style:TextStyle(
                     fontSize: 32,
                     color: Colors.white,
                     letterSpacing: 1.5,
-                  ),)
+                  ),
                 ),
               ],
             ),
@@ -104,7 +117,7 @@ class TopContainer extends StatelessWidget {
             color: Color(0xFF939B96),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 12.0),
+            padding: EdgeInsets.only(top: 8.0),
             child: Center(
               child: Text(
                 "Number of Medicine Reminder",
@@ -138,6 +151,13 @@ class BottomContainer extends StatelessWidget {
           )
         ],
         color: Colors.deepPurple[50],
+      ),
+
+      child: Column(
+        children: [
+          Text("New Alarm"),
+          Expanded(child: ListView()),
+        ],
       ),
     );
   }

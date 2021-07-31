@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:drugboxappv1/Views/my_medicine.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:google_fonts/google_fonts.dart';
 
 class DashBoard extends StatefulWidget {
   @override
@@ -52,7 +51,7 @@ class _DashBoardState extends State<DashBoard> {
                         heading,
                         style: TextStyle(
                           color: new Color(color),
-                          fontSize: 20.0,
+                          fontSize: 19.0,
                         ),
                       ),
                     ),
@@ -66,23 +65,21 @@ class _DashBoardState extends State<DashBoard> {
     );
   }
 
-  String greetingMessage(){
+  String greetingMessage() {
+    var timeNow = DateTime.now().hour;
 
-  var timeNow = DateTime.now().hour;
-  
-  if (timeNow <= 12) {
-    return 'Good Morning!';
-  } 
-  else if ((timeNow > 12) && (timeNow <= 15)) {
-  return 'Good Noon!';
-  }else if ((timeNow > 15) && (timeNow <= 17)) {
-  return 'Good Afternoon!';
-  } else if ((timeNow > 17) && (timeNow < 20)) {
-  return 'Good Evening!';
-  } else {
-  return 'Good Night!';
+    if ((timeNow <= 12) && (timeNow >= 4)) {
+      return 'Good Morning!';
+    } else if ((timeNow > 12) && (timeNow <= 15)) {
+      return 'Good Noon!';
+    } else if ((timeNow > 15) && (timeNow <= 17)) {
+      return 'Good Afternoon!';
+    } else if ((timeNow > 17) && (timeNow < 20)) {
+      return 'Good Evening!';
+    } else {
+      return 'Good Night!';
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +95,7 @@ class _DashBoardState extends State<DashBoard> {
             child: Center(
               child: Text(
                 greetingMessage(),
-                style:GoogleFonts.lato(textStyle:TextStyle(fontSize: 28, letterSpacing: 3.0),) 
+                style: TextStyle(fontSize: 28, letterSpacing: 3.0),
               ),
             ),
           ),
@@ -106,31 +103,49 @@ class _DashBoardState extends State<DashBoard> {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => SearchMedicine()));
           }),
-          myItems(Icons.local_hospital, "My Medicine", 0xFF115097, () {
-            var firebaseUser = FirebaseAuth.instance.currentUser;
-            if (firebaseUser.uid != null) {
-              return Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MyMedicine()));
-            } else {
-              Container(
-                color: Color(0xFFF6F8FC),
-                child: Center(
-                  child: Text(
-                    "Please Log in first!.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 24,
-                        color: Color(0xFFC9C9C9),
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              );
-            }
+          Builder(builder: (BuildContext con) {
+            return myItems(Icons.local_hospital, "My Medicine", 0xFF115097, () {
+              // var firebaseUser = 0;
+              // var firebaseUser = FirebaseAuth.instance;
+
+              // if (firebaseUser.currentUser != null) {
+              //   return 
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MyMedicine()));
+              // } else {
+              //   Scaffold.of(con).showSnackBar(
+              //       SnackBar(content: Text("Please login first"),
+              //       duration: Duration(seconds: 3),));
+               
+              // }
+            });
           }),
-          myItems(Icons.alarm, "Medicine Alarm", 0xFF308DB8, () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => AlarmScreen()));
+
+          Builder(builder: (BuildContext con) {
+            return 
+            myItems(Icons.alarm, "Medicine Alarm", 0xFF308DB8, () {
+              // var firebaseUser = 0;
+              // var firebaseUser = FirebaseAuth.instance;
+
+              // if (firebaseUser.currentUser != null) {
+              //   return 
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AlarmScreen()));
+              // } else {
+              //   Scaffold.of(con).showSnackBar(
+              //       SnackBar(content: Text("Please login first"),
+              //       duration: Duration(seconds: 3),));
+               
+              // }
+            });
           }),
+
+
+
+          // myItems(Icons.alarm, "Medicine Alarm", 0xFF308DB8, () {
+          //   Navigator.push(context,
+          //       MaterialPageRoute(builder: (context) => AlarmScreen()));
+          // }),
           myItems(Icons.calculate, "Calculator", 0xFF79AD17, () {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => MyMedicine()));

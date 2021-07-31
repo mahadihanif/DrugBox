@@ -1,19 +1,39 @@
-
-import 'package:drugboxappv1/Helpers/MultipleNotifire.dart';
-
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'Helpers/Headers.dart';
 import 'Services/ManageData.dart';
 import 'package:drugboxappv1/Views/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-// import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:drugboxappv1/Views/home_screen.dart';
 import 'package:drugboxappv1/Views/login_screen.dart';
 import 'package:provider/provider.dart';
 
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  var initializationSettingsAndroid =
+      AndroidInitializationSettings(
+        'flutter_icon');
+        
+  var initializationSettingsIOS = IOSInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+      onDidReceiveLocalNotification:
+          (int id, String title, String body, String payload) async {});
+  var initializationSettings = InitializationSettings(
+       initializationSettingsAndroid, initializationSettingsIOS);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      onSelectNotification: (String payload) async {
+    if (payload != null) {
+      debugPrint('notification payload: ' + payload);
+    }
+  });
+
   await Firebase.initializeApp();
   runApp(MyApp());
 }
@@ -25,9 +45,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(value: Headers()),
         ChangeNotifierProvider.value(value: ManageData()),
-        // ChangeNotifierProvider.value(value: MultipleNotifire({ })),
-        // ChangeNotifierProvider<MultipleNotifire>(create: (_)=> MultipleNotifire({})),
-        
+        // ChangeNotifierProvider.value(value: MultipleNotifire()),
       ],
       child: MaterialApp(
           title: 'DrugBox',
@@ -44,8 +62,8 @@ class MyApp extends StatelessWidget {
               //     // InitializerWidget(),
 
               //   ],
-              // ) 
-              
+              // )
+              // LoginScreen()
               SplashScreen()
           // SearchMedicine()
           // HomeScreen()

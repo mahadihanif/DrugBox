@@ -44,6 +44,7 @@ class _DetailedScreenState extends State<DetailedScreen> {
   }
 
   Widget topContainer() {
+    var medType = widget.queryDocumentSnapshot['subtitle'];
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
@@ -70,11 +71,18 @@ class _DetailedScreenState extends State<DetailedScreen> {
             ),
             child: Column(
               children: [
-                Image.network(
-                  widget.queryDocumentSnapshot['md_icon'],
-                  height: 40,
-                  width: 40,
-                ),
+                if (medType != "Capsule")
+                  Image.asset(
+                    "assets/images/round_tablets.png",
+                    height: 40,
+                    width: 40,
+                  )
+                else
+                  Image.asset(
+                    "assets/images/capsule.png",
+                    height: 40,
+                    width: 40,
+                  )
               ],
             ),
           ),
