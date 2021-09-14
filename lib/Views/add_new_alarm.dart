@@ -120,6 +120,7 @@ class _AddAlarmState extends State<AddAlarm> {
                   fontSize: 16,
                 ),
                 // controller: nameController,
+                autofocus: true,
                 textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
                   hintText: "eg: Napa",
@@ -455,7 +456,7 @@ class _AddAlarmState extends State<AddAlarm> {
                 ),
             child: MediaQuery(
                 data: MediaQuery.of(context)
-                    .copyWith(alwaysUse24HourFormat: true),
+                    .copyWith(alwaysUse24HourFormat:false),
                 child: child),
           );
         });
@@ -514,7 +515,7 @@ class _AddAlarmState extends State<AddAlarm> {
       });
   }
 
-  void scheduleAlarm(DateTime scheduledNotificationDateTime) async {
+  void scheduleAlarm() async {
     var scheduledNotificationDateTime =
         DateTime.now().add(Duration(seconds: 5));
     var vibrationPattern = Int64List(4);

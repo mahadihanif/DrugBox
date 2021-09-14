@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drugboxappv1/models/medicine.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class DetailedScreen extends StatefulWidget {
-  final QueryDocumentSnapshot queryDocumentSnapshot;
+  // final QueryDocumentSnapshot queryDocumentSnapshot;
+  final Medicine medicine;
 
-  DetailedScreen({this.queryDocumentSnapshot});
+  DetailedScreen({Key key, @required this.medicine}) : super(key: key);
 
   @override
   _DetailedScreenState createState() => _DetailedScreenState();
@@ -44,7 +46,7 @@ class _DetailedScreenState extends State<DetailedScreen> {
   }
 
   Widget topContainer() {
-    var medType = widget.queryDocumentSnapshot['subtitle'];
+    var medType = widget.medicine.subtitle;
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
@@ -97,7 +99,7 @@ class _DetailedScreenState extends State<DetailedScreen> {
                 Row(
                   children: [
                     Text(
-                      widget.queryDocumentSnapshot['title'],
+                      widget.medicine.title,
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -108,7 +110,7 @@ class _DetailedScreenState extends State<DetailedScreen> {
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Text(
-                        widget.queryDocumentSnapshot['strength'],
+                        widget.medicine.strength,
                         style: TextStyle(
                           fontSize: 17,
                           color: Colors.white,
@@ -121,7 +123,7 @@ class _DetailedScreenState extends State<DetailedScreen> {
                   height: 4.0,
                 ),
                 Text(
-                  widget.queryDocumentSnapshot['subtitle'],
+                  widget.medicine.subtitle,
                   style: TextStyle(
                     fontSize: 17,
                     color: Colors.white,
@@ -131,7 +133,7 @@ class _DetailedScreenState extends State<DetailedScreen> {
                   height: 4.0,
                 ),
                 Text(
-                  "By " + widget.queryDocumentSnapshot['manufactured_by'],
+                  "By " + widget.medicine.manufactured_by,
                   style: TextStyle(
                     fontSize: 19,
                     color: Colors.white,
@@ -177,7 +179,7 @@ class _DetailedScreenState extends State<DetailedScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 3.0),
               child: Text(
-                widget.queryDocumentSnapshot['generic_name'],
+                widget.medicine.generic_name,
                 style: TextStyle(
                     fontSize: 18.0, letterSpacing: 1.5, color: Colors.black),
               ),
@@ -203,7 +205,7 @@ class _DetailedScreenState extends State<DetailedScreen> {
                 Padding(
                   padding: const EdgeInsets.only(left: 1.5),
                   child: Text(
-                    widget.queryDocumentSnapshot['unit_price'] + " Taka",
+                    widget.medicine.unit_price+ " Taka",
                     style: TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.w500,
@@ -227,7 +229,7 @@ class _DetailedScreenState extends State<DetailedScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 1.5),
               child: Text(
-                widget.queryDocumentSnapshot["indications"],
+                widget.medicine.indications,
                 style: TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.w500,
@@ -249,7 +251,7 @@ class _DetailedScreenState extends State<DetailedScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 1.5),
               child: Text(
-                widget.queryDocumentSnapshot["side_effects"],
+                widget.medicine.side_effects,
                 style: TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.w500,
@@ -313,17 +315,17 @@ class _DetailedScreenState extends State<DetailedScreen> {
         .collection("UserItems")
         .doc(firebaseUser.uid)
         .collection('MyMedicine')
-        .doc(widget.queryDocumentSnapshot.id)
+        .doc(widget.medicine.id)
         .set({
-      "title": widget.queryDocumentSnapshot['title'],
-      "subtitle": widget.queryDocumentSnapshot['subtitle'],
-      "md_icon ": widget.queryDocumentSnapshot['md_icon'],
-      "generic_name": widget.queryDocumentSnapshot['generic_name'],
-      "strength": widget.queryDocumentSnapshot['strength'],
-      "manufactured_by": widget.queryDocumentSnapshot['manufactured_by'],
-      "unit_price": widget.queryDocumentSnapshot['unit_price'],
-      "indications": widget.queryDocumentSnapshot['indications'],
-      "side_effects": widget.queryDocumentSnapshot['side_effects'],
+      "title": widget.medicine.title,
+      "subtitle": widget.medicine.subtitle,
+      "md_icon ": widget.medicine.md_icon,
+      "generic_name": widget.medicine.generic_name,
+      "strength": widget.medicine.strength,
+      "manufactured_by": widget.medicine.manufactured_by,
+      "unit_price": widget.medicine.unit_price,
+      "indications": widget.medicine.indications,
+      "side_effects": widget.medicine.side_effects,
     }).catchError((e) {
       print(e);
     });
