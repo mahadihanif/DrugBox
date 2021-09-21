@@ -112,9 +112,9 @@ class SlideBar extends StatelessWidget {
               title: Text("Exit"),
             ),
             onTap: () async {
-              await _auth.signOut();
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()));
+            //   await _auth.signOut();
+            //   Navigator.pushReplacement(context,
+            //       MaterialPageRoute(builder: (context) => LoginScreen()));
             },
           ),
         ],

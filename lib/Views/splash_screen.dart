@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:drugboxappv1/Views/home_screen.dart';
+import 'package:drugboxappv1/main.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
@@ -17,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
         () => Navigator.pushReplacement(
             context,
             PageTransition(
-                child: HomeScreen(),
+                child: HomeController(),
                 type: PageTransitionType.leftToRightWithFade)));
     super.initState();
   }

@@ -21,22 +21,31 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  flutter:
-    sdk: flutter
   cloud_firestore: ^0.16.0
   cupertino_icons: ^1.0.0
   eva_icons_flutter: ^2.0.1
   firebase_auth: ^0.20.0+1
   firebase_core: ^0.7.0
+  firebase_messaging: ^5.1.8
+  flutter:
+    sdk: flutter
+
+  flutter_local_notifications: ^4.0.1+2
+  intl: ^0.16.1
+  rxdart: ^0.25.0
+  flutter_native_timezone: ^1.0.4
   flutter_secure_storage: ^3.3.5
   flutter_staggered_grid_view: ^0.3.0
   font_awesome_flutter: ^8.10.0
-  flutter_local_notifications: ^1.4.4+2
+  auto_size_text: ^2.0.2
   google_fonts: ^0.2.0
   lottie: ^0.7.0+1
   multi_select_flutter: ^3.1.8
   page_transition: ^1.1.7+2
   provider: ^4.3.2+2
+  international_phone_input: ^1.0.4
+  device_info: ^0.4.1+4
+  flutter_spinkit: ^3.1.0
 
 dev_dependencies:
   flutter_test:

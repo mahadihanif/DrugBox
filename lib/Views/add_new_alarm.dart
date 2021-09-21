@@ -1,7 +1,10 @@
 import 'dart:ffi';
 import 'dart:typed_data';
+import 'package:drugboxappv1/Helpers/notificationApi.dart';
+import 'package:drugboxappv1/Views/alarm_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
 import 'package:multi_select_flutter/bottom_sheet/multi_select_bottom_sheet_field.dart';
 import 'package:multi_select_flutter/chip_display/multi_select_chip_display.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
@@ -26,7 +29,6 @@ class AddAlarm extends StatefulWidget {
 class _AddAlarmState extends State<AddAlarm> {
   String frequencyChoose = "Once a day";
   // String dateGroupValue;
-  
 
   TimeOfDay _time1 = TimeOfDay.now();
   TimeOfDay _time2 = TimeOfDay.now();
@@ -58,15 +60,20 @@ class _AddAlarmState extends State<AddAlarm> {
     "Thrice a day",
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    // Provider.of<NotificationService>(context, listen: false).initialize();
-    super.initState();
-    // _time1 = TimeOfDay.now();
-    // _time2 = TimeOfDay.now();
-    // _time3 = TimeOfDay.now();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   NotificationApi.init();
+  //   listenNotifications();
+  // }
+
+  void listenNotifications() =>
+      NotificationApi.onNOtifications.stream.listen(onClickedNotification);
+
+  void onClickedNotification(String payload) =>
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => AlarmScreen(),
+      ));
 
   Future<Void> selectDate(BuildContext context) async {
     DateTime datePicker = await showDatePicker(
@@ -78,6 +85,9 @@ class _AddAlarmState extends State<AddAlarm> {
 
   @override
   Widget build(BuildContext context) {
+
+    final _width = MediaQuery.of(context).size.width;
+    final _height = MediaQuery.of(context).size.height;
     return Scaffold(
       // resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.deepPurple[50],
@@ -288,12 +298,29 @@ class _AddAlarmState extends State<AddAlarm> {
           ),
         ]),
       )),
+
       floatingActionButton: FloatingActionButton(
         elevation: 4,
         // backgroundColor: Colors.black,
         child: Icon(Icons.add),
         onPressed: () {
-          scheduleAlarm();
+          //   NotificationApi.showNotification(
+          //     title: "Dinner",
+          //     body: "Today at 6 PM",
+          //     payload: "dinner_6pm",
+          //     scheduleDate: DateTime.now().add(Duration(seconds: 12)),
+          //   );
+          //   final snackBar = SnackBar(
+          //     content: Text(
+          //       "Scheduled in 12 seconds!",
+          //       style: TextStyle(fontSize: 24),
+          //     ),
+          //     backgroundColor: Colors.green,
+          //   );
+
+          //   ScaffoldMessenger.of(context)
+          //     ..removeCurrentSnackBar()
+          //     ..showSnackBar(snackBar);
         },
       ),
     );
@@ -325,7 +352,7 @@ class _AddAlarmState extends State<AddAlarm> {
             onTap: () {},
             child: Container(
               child: DropdownButton(
-                hint: Text("Select frequency"),
+                hint: Text("Select dose"),
                 dropdownColor: Colors.deepPurple.shade200,
                 value: frequencyChoose,
                 onChanged: (newValue) {
@@ -356,6 +383,7 @@ class _AddAlarmState extends State<AddAlarm> {
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Icon(Icons.timer_rounded),
                 ),
+                
                 Text(
                   "${_time1.hour}:${_time1.minute}",
                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 22),
@@ -442,6 +470,7 @@ class _AddAlarmState extends State<AddAlarm> {
   }
 
   ///////////////////////*****/ time takeing method *****///////////////
+  ///
 
   pickTime1() async {
     TimeOfDay time = await showTimePicker(
@@ -450,21 +479,21 @@ class _AddAlarmState extends State<AddAlarm> {
         builder: (BuildContext context, Widget child) {
           return Theme(
             data: ThemeData(
-                primaryColor: Color(0xFFC41A3B),
-                accentColor: Color(0xFFC41A3B),
-
-                ),
+              primaryColor: Colors.deepPurple,
+              accentColor: Colors.purple,
+            ),
             child: MediaQuery(
                 data: MediaQuery.of(context)
-                    .copyWith(alwaysUse24HourFormat:false),
+                    .copyWith(alwaysUse24HourFormat: false),
                 child: child),
           );
         });
 
-    if (time != null)
-      setState(() {
-        _time1 = time;
-      });
+    if (time != null) 
+    setState(() {
+      _time1 = time;
+      
+    });
   }
 
   pickTime2() async {
@@ -515,37 +544,37 @@ class _AddAlarmState extends State<AddAlarm> {
       });
   }
 
-  void scheduleAlarm() async {
-    var scheduledNotificationDateTime =
-        DateTime.now().add(Duration(seconds: 5));
-    var vibrationPattern = Int64List(4);
-    vibrationPattern[0] = 0;
-    vibrationPattern[1] = 1000;
-    vibrationPattern[2] = 5000;
-    vibrationPattern[3] = 2000;
+  // void scheduleAlarm() async {
+  //   var scheduledNotificationDateTime =
+  //       DateTime.now().add(Duration(seconds: 5));
+  //   var vibrationPattern = Int64List(4);
+  //   vibrationPattern[0] = 0;
+  //   vibrationPattern[1] = 1000;
+  //   vibrationPattern[2] = 5000;
+  //   vibrationPattern[3] = 2000;
 
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'alarm_notif',
-      'alarm_notif',
-      'Channel for Alarm notification',
-      icon: 'flutter_icon',
-      playSound: true,
-      sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
-      largeIcon: DrawableResourceAndroidBitmap('flutter_icon'),
-    );
+  //   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+  //     'alarm_notif',
+  //     'alarm_notif',
+  //     'Channel for Alarm notification',
+  //     icon: 'flutter_icon',
+  //     playSound: true,
+  //     sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
+  //     largeIcon: DrawableResourceAndroidBitmap('flutter_icon'),
+  //   );
 
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
-        sound: 'a_long_cold_sting.wav',
-        presentAlert: true,
-        presentBadge: true,
-        presentSound: true);
-    var platformChannelSpecifics = NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.schedule(
-        0,
-        'Office',
-        'Good morning! Time for office.',
-        scheduledNotificationDateTime,
-        platformChannelSpecifics);
-  }
+  //   var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+  //       sound: 'a_long_cold_sting.wav',
+  //       presentAlert: true,
+  //       presentBadge: true,
+  //       presentSound: true);
+  //   var platformChannelSpecifics = NotificationDetails(
+  //       androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+  //   await flutterLocalNotificationsPlugin.schedule(
+  //       0,
+  //       'Office',
+  //       'Good morning! Time for office.',
+  //       scheduledNotificationDateTime,
+  //       platformChannelSpecifics);
+  // }
 }
