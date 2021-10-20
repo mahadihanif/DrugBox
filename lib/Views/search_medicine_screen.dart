@@ -1,100 +1,141 @@
-// import 'package:drugboxappv1/Helpers/Headers.dart';
+// import 'dart:io';
+
+// import 'package:awesome_notifications/awesome_notifications.dart';
 // import 'package:flutter/material.dart';
+// import 'package:flutter_awesome_notifications_tutorial/notifications.dart';
+// import 'package:flutter_awesome_notifications_tutorial/plant_stats_page.dart';
+// import 'package:flutter_awesome_notifications_tutorial/utilities.dart';
+// import 'package:flutter_awesome_notifications_tutorial/widgets.dart';
 
+// class HomePage extends StatefulWidget {
+//   const HomePage({Key? key}) : super(key: key);
 
-// class SearchMedicine extends StatefulWidget {
 //   @override
-//   _SearchMedicineState createState() => _SearchMedicineState();
+//   _HomePageState createState() => _HomePageState();
 // }
 
-// class _SearchMedicineState extends State<SearchMedicine> {
-//   TextEditingController searchController = TextEditingController();
-//   // Future resultsLoaded;
-//   // List altResults = [];
+// class _HomePageState extends State<HomePage> {
+//   @override
+//   void initState() {
+//     super.initState();
+//     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+//       if (!isAllowed) {
+//         showDialog(
+//           context: context,
+//           builder: (context) => AlertDialog(
+//             title: Text('Allow Notifications'),
+//             content: Text('Our app would like to send you notifications'),
+//             actions: [
+//               TextButton(
+//                 onPressed: () {
+//                   Navigator.pop(context);
+//                 },
+//                 child: Text(
+//                   'Don\'t Allow',
+//                   style: TextStyle(
+//                     color: Colors.grey,
+//                     fontSize: 18,
+//                   ),
+//                 ),
+//               ),
+//               TextButton(
+//                   onPressed: () => AwesomeNotifications()
+//                       .requestPermissionToSendNotifications()
+//                       .then((_) => Navigator.pop(context)),
+//                   child: Text(
+//                     'Allow',
+//                     style: TextStyle(
+//                       color: Colors.teal,
+//                       fontSize: 18,
+//                       fontWeight: FontWeight.bold,
+//                     ),
+//                   ))
+//             ],
+//           ),
+//         );
+//       }
+//     });
 
-//   // @override
-//   // void initState() {
-//   //   super.initState();
-//   //   searchController.addListener(onSearchChanged);
-//   // }
+//     AwesomeNotifications().createdStream.listen((notification) {
+//       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+//         content: Text(
+//           'Notification Created on ${notification.channelKey}',
+//         ),
+//       ));
+//     });
 
-//   // @override
-//   // void dispose() {
-//   //   searchController.removeListener(onSearchChanged);
-//   //   searchController.dispose();
-//   //   super.dispose();
-//   // }
+//     AwesomeNotifications().actionStream.listen((notification) {
+//       if (notification.channelKey == 'basic_channel' && Platform.isIOS) {
+//         AwesomeNotifications().getGlobalBadgeCounter().then(
+//               (value) =>
+//                   AwesomeNotifications().setGlobalBadgeCounter(value - 1),
+//             );
+//       }
 
-//   // @override
-//   // void didChangeDependencies() {
-//   //   super.didChangeDependencies();
-//   //   resultsLoaded = getMedicineDocs();
-//   // }
+//       Navigator.pushAndRemoveUntil(
+//         context,
+//         MaterialPageRoute(
+//           builder: (_) => PlantStatsPage(),
+//         ),
+//         (route) => route.isFirst,
+//       );
+//     });
+//   }
 
-//   // onSearchChanged() {
-//   //   print(searchController.text);
-//   // }
-
-//   // getMedicineDocs() async {
-//   //   final uid = await Provider.of(context).auth.getCurrentUID();
-//   //   var data = await FirebaseFirestore.instance.collection('medicine').get();
-//   //   setState(() {
-//   //     altResults = data.docs;
-//   //   });
-//   //   return "complete";
-//   // }
+//   @override
+//   void dispose() {
+//     AwesomeNotifications().actionSink.close();
+//     AwesomeNotifications().createdSink.close();
+//     super.dispose();
+//   }
 
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
 //       appBar: AppBar(
-//         title: Center(child: Text('Search Medicine | DrugBox')),
-//         backgroundColor: Colors.deepPurple,
+//         centerTitle: true,
+//         title: AppBarTitle(),
 //         actions: [
-//           Center(child: Text("+1")),
-//           IconButton(icon: Icon(Icons.notifications), onPressed: () => {}),
-//         ],
-//         shape: ShapeBorder.lerp(
-//           RoundedRectangleBorder(
-//             borderRadius: BorderRadius.only(
-//               bottomLeft: Radius.circular(30.0),
-//               bottomRight: Radius.circular(30.0),
+//           IconButton(
+//             onPressed: () {
+//               Navigator.push(
+//                 context,
+//                 MaterialPageRoute(
+//                   builder: (_) => PlantStatsPage(),
+//                 ),
+//               );
+//             },
+//             icon: Icon(
+//               Icons.insert_chart_outlined_rounded,
+//               size: 30,
 //             ),
-//           ),
-//           null,
-//           0,
-//         ),
+//           )
+//         ],
 //       ),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             PlantImage(),
+//             SizedBox(
+//               height: 25,
+//             ),
+//             HomePageButtons(
+//               onPressedOne: createPlantFoodNotification,
+//               onPressedTwo: () async {
+//                 NotificationWeekAndTime? pickedSchedule =
+//                     await pickSchedule(context);
 
-//       // backgroundColor: Colors.white,
-//       body: 
-//       SingleChildScrollView(
-//         child: Padding(
-//           padding: const EdgeInsets.only(top: 8.0),
-//           child: Column(
-//             children: [
-//               // TextField(
-//               //   controller: searchController,
-//               //   decoration: InputDecoration(
-//               //       prefixIcon: Icon(Icons.search),
-//               //       hintText: 'Write medicine name',
-//               //       hintStyle: TextStyle(color: Colors.grey),
-//               //       border: OutlineInputBorder(
-//               //           borderRadius: BorderRadius.circular(10.0)),
-//               //       suffixIcon: IconButton(
-//               //         icon: Icon(Icons.clear),
-//               //         onPressed: () => searchController.clear(),
-//               //       )),
-//               // ),
-//               // SizedBox(height: 10,),
-              
-
-//               // Headers().searchBar(context),
-//               Headers().medicineList(context, 'medicine'),
-//             ],
-//           ),
+//                 if (pickedSchedule != null) {
+//                   createWaterReminderNotification(pickedSchedule);
+//                 }
+//               },
+//               onPressedThree: cancelScheduledNotifications,
+//             ),
+//           ],
 //         ),
 //       ),
 //     );
 //   }
 // }
+// ©

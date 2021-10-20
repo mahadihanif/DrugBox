@@ -8,76 +8,176 @@ import 'medicineList.dart';
 import 'my_medicine.dart';
 import 'alarm_screen.dart';
 
-
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // int _currentIndex = 0;
-  // final List<Widget> _children = [
-  //   DashBoard(),
-  //   SearchMedicine(),
-  //   MyMedicine(),
-  //   AlarmScreen(),
-
-  // ];
+  int _currentTab = 0;
+  final List<Widget> _screens = [
+    DashBoard(),
+    SearchMedicine(),
+    MyMedicine(),
+    AlarmScreen(),
+  ];
+  final PageStorageBucket bucket = PageStorageBucket();
   final _auth = FirebaseAuth.instance;
+  Widget currentScreen = DashBoard();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SlideBar(),
-      // backgroundColor: Colors.deepPurple,
-      appBar: AppBar(
-        title: Center(child: Text('Medicine | DrugBox')),
-        backgroundColor: Colors.deepPurple,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.undo),
-            onPressed: () async {
-              try {
-                AuthService auth = Provider.of(context).auth;
-                await auth.signOut();
-                print("Signed Out!");
-              } catch (e) {
-                print (e);
-              }
-            },
-          )
-        ],
-        shape: ShapeBorder.lerp(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(30.0),
-              bottomRight: Radius.circular(30.0),
-            ),
+//home Screen Body Start.....
+      body: PageStorage(
+        bucket: bucket,
+        child: currentScreen,
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {},
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 10,
+        child: Container(
+          height: 60,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Left tab
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {
+                      setState(() {
+                        currentScreen = DashBoard();
+                        _currentTab = 0;
+                      });
+                    },
+                    child: Column(                      
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.dashboard,
+                          color: _currentTab == 0 ? Colors.green : Colors.grey,
+                        ),
+                        Text(
+                          'Dashboard',
+                          style: TextStyle(color: _currentTab == 0 ? Colors.green : Colors.grey,),
+                  
+                        )
+                      ],
+                    ),
+                    
+                  ),
+
+
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {
+                      setState(() {
+                        currentScreen = SearchMedicine();
+                        _currentTab = 1;
+                      });
+                    },
+                    child: Column(                      
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.search,
+                          color: _currentTab == 1 ? Colors.green : Colors.grey,
+                        ),
+                        Text(
+                          'Search',
+                          style: TextStyle(color: _currentTab == 1 ? Colors.green : Colors.grey,),
+                  
+                        )
+                      ],
+                    ),
+                    
+                  ),
+                ],
+              ),
+
+
+              // Right Tab
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {
+                      setState(() {
+                        currentScreen = MyMedicine();
+                        _currentTab = 2;
+                      });
+                    },
+                    child: Column(                      
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.medication,
+                          color: _currentTab == 2 ? Colors.green : Colors.grey,
+                        ),
+                        Text(
+                          'My Medicine',
+                          style: TextStyle(color: _currentTab == 2 ? Colors.green : Colors.grey,),
+                  
+                        )
+                      ],
+                    ),
+                    
+                  ),
+
+
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {
+                      setState(() {
+                        currentScreen = AlarmScreen();
+                        _currentTab = 3;
+                      });
+                    },
+                    child: Column(                      
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.alarm,
+                          color: _currentTab == 3 ? Colors.green : Colors.grey,
+                        ),
+                        Text(
+                          'Alarm',
+                          style: TextStyle(color: _currentTab == 3 ? Colors.green : Colors.grey,),
+                  
+                        )
+                      ],
+                    ),
+                    
+                  ),
+                ],
+              )
+            ],
           ),
-          null,
-          0,
         ),
       ),
 
-      
-
-//home Screen Body Start.....
-      body: 
-      // _children[_currentIndex],
-      DashBoard(),
-
-
-
+      //body: _screens[_currentTab],
 
       // bottomNavigationBar: BottomNavigationBar(
+      //   // backgroundColor: Colors.grey,
+      //   // fixedColor: Colors.amber,
       //   onTap: onTabTapped,
-      //   currentIndex: _currentIndex,
+      //   currentIndex: _currentTab,
       //   items: [
       //     BottomNavigationBarItem(
       //       icon: new Icon(Icons.home),
       //       label: ("Home"),
       //     ),
-      //      BottomNavigationBarItem(
+      //     BottomNavigationBarItem(
       //       icon: new Icon(Icons.search),
       //       label: ("Search Medicine"),
       //     ),
@@ -95,23 +195,12 @@ class _HomeScreenState extends State<HomeScreen> {
       //     ),
       //   ],
       // ),
-
-
-
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () async {
-      //     await _auth.signOut();
-      //     Navigator.pushReplacement(
-      //         context, MaterialPageRoute(builder: (context) => LoginScreen()));
-      //   },
-      //   child: Icon(Icons.logout),
-      // ),
     );
   }
 
   // void onTabTapped(int index) {
   //   setState(() {
-  //     _currentIndex = index;
+  //     _currentTab = index;
   //   });
   // }
 }

@@ -100,7 +100,7 @@ class _DetailedScreenState extends State<DetailedScreen1> {
                 Row(
                   children: [
                     Text(
-                      widget.queryDocumentSnapshot.data()['title'],
+                      widget.queryDocumentSnapshot['title'],
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -111,7 +111,7 @@ class _DetailedScreenState extends State<DetailedScreen1> {
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Text(
-                        widget.queryDocumentSnapshot.data()['strength'],
+                        widget.queryDocumentSnapshot['strength'],
                         style: TextStyle(
                           fontSize: 17,
                           color: Colors.white,
@@ -124,7 +124,7 @@ class _DetailedScreenState extends State<DetailedScreen1> {
                   height: 4.0,
                 ),
                 Text(
-                  widget.queryDocumentSnapshot.data()['subtitle'],
+                  widget.queryDocumentSnapshot['subtitle'],
                   style: TextStyle(
                     fontSize: 17,
                     color: Colors.white,
@@ -135,7 +135,7 @@ class _DetailedScreenState extends State<DetailedScreen1> {
                 ),
                 Text(
                   "By " +
-                      widget.queryDocumentSnapshot.data()['manufactured_by'],
+                      widget.queryDocumentSnapshot['manufactured_by'],
                   style: TextStyle(
                     fontSize: 19,
                     color: Colors.white,

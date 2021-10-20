@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:drugboxappv1/Helpers/Headers.dart';
+import 'package:drugboxappv1/Services/auth_service.dart';
+import 'package:drugboxappv1/Views/slideBar.dart';
 import 'package:drugboxappv1/models/medicine.dart';
 import 'package:drugboxappv1/widgets/medicine_card.dart';
+import 'package:drugboxappv1/widgets/provider_widget.dart';
 import 'package:flutter/material.dart';
 
 class SearchMedicine extends StatefulWidget {
@@ -72,12 +74,26 @@ class _SearchMedicineState extends State<SearchMedicine> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Center(child: Text('Search Medicine | DrugBox')),
-          backgroundColor: Colors.deepPurple,
-          elevation: 0.0,
-
-          shape: ShapeBorder.lerp(
+         drawer: SlideBar(),
+      // backgroundColor: Colors.deepPurple,
+      appBar: AppBar(
+        title: Center(child: Text('Medicine | DrugBox')),
+        backgroundColor: Colors.green[600],
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () async {
+              try {
+                AuthService auth = Provider.of(context).auth;
+                await auth.signOut();
+                print("Signed Out!");
+              } catch (e) {
+                print (e);
+              }
+            },
+          )
+        ],
+        shape: ShapeBorder.lerp(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(30.0),
@@ -87,7 +103,7 @@ class _SearchMedicineState extends State<SearchMedicine> {
           null,
           0,
         ),
-        ),
+      ),
 
         body: Container(
           color: Color(0xFFF6F8FC),
@@ -114,54 +130,6 @@ class _SearchMedicineState extends State<SearchMedicine> {
           ),
         ));
 
-    // Scaffold(
-    //   appBar: AppBar(
-    //     title: Center(child: Text('Search Medicine | DrugBox')),
-    //     backgroundColor: Colors.deepPurple,
-    //     // actions: [
-    //     //   Center(child: Text("+1")),
-    //     //   IconButton(icon: Icon(Icons.notifications), onPressed: () => {}),
-    //     // ],
-    //     shape: ShapeBorder.lerp(
-    //       RoundedRectangleBorder(
-    //         borderRadius: BorderRadius.only(
-    //           bottomLeft: Radius.circular(30.0),
-    //           bottomRight: Radius.circular(30.0),
-    //         ),
-    //       ),
-    //       null,
-    //       0,
-    //     ),
-    //   ),
-
-    //   // backgroundColor: Colors.white,
-    //   body:
-    //   SingleChildScrollView(
-    //     child: Padding(
-    //       padding: const EdgeInsets.only(top: 8.0),
-    //       child: Column(
-    //         children: [
-    //           TextField(
-    //             controller: _searchController,
-    //             decoration: InputDecoration(
-    //                 prefixIcon: Icon(Icons.search),
-    //                 hintText: 'Write medicine name',
-    //                 hintStyle: TextStyle(color: Colors.grey),
-    //                 border: OutlineInputBorder(
-    //                     borderRadius: BorderRadius.circular(10.0)),
-    //                 suffixIcon: IconButton(
-    //                   icon: Icon(Icons.clear),
-    //                   onPressed: () => _searchController.clear(),
-    //                 )),
-    //           ),
-    //           // SizedBox(height: 10,),
-
-    //           // Headers().searchBar(context),
-    //           Headers().medicineList(context, 'medicine'),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
+    
   }
 }

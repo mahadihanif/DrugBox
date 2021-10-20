@@ -1,9 +1,7 @@
 import 'package:drugboxappv1/Views/medicineList.dart';
-import 'package:drugboxappv1/Views/search_medicine_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:drugboxappv1/Views/my_medicine.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:drugboxappv1/Views/login_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
 class SlideBar extends StatelessWidget {

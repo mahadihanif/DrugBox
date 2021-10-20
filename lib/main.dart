@@ -1,48 +1,38 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:drugboxappv1/Services/auth_service.dart';
-// import 'package:drugboxappv1/Views/alarm_screen.dart';
-import 'package:drugboxappv1/Views/navigation_view.dart';
 import 'package:drugboxappv1/Views/sign_up_View.dart';
 import 'package:drugboxappv1/widgets/provider_widget.dart';
-// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'Services/custom_colors.dart';
 import 'package:drugboxappv1/Views/splash_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:drugboxappv1/Views/home_screen.dart';
 import 'Views/firstView.dart';
 
 
-// final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-//     FlutterLocalNotificationsPlugin();
 
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-
-// var initializationSettingsAndroid =
-//     AndroidInitializationSettings('flutter_icon');
-
-// var initializationSettingsIOS = IOSInitializationSettings(
-//     requestAlertPermission: true,
-//     requestBadgePermission: true,
-//     requestSoundPermission: true,
-//     onDidReceiveLocalNotification:
-//         (int id, String title, String body, String payload) async {});
-// var initializationSettings = InitializationSettings(
-//     initializationSettingsAndroid, initializationSettingsIOS);
-// await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-//     onSelectNotification: (String payload) async {
-//   if (payload != null) {
-//     debugPrint('notification payload: ' + payload);
-//   }
-// });
-
-//   await Firebase.initializeApp();
-//   runApp(MyApp());
-// }
 Future<void> main() async {
+  AwesomeNotifications().initialize(
+    'resource://drawable/flutter_icon',
+    [
+      NotificationChannel(
+        channelKey: 'basic_channel',
+        channelName: 'Basic Notifications',
+        defaultColor: Colors.teal,
+        importance: NotificationImportance.High,
+        channelShowBadge: true,
+      ),
+      NotificationChannel(
+        channelKey: 'scheduled_channel',
+        channelName: 'Scheduled Notifications',
+        defaultColor: Colors.teal,  
+        locked: true,
+        importance: NotificationImportance.High,
+        playSound: true,
+        vibrationPattern: lowVibrationPattern,
+        soundSource: 'resource://raw/res_a_long_cold_sting.wav'
+      ),
+    ],
+  );
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
@@ -92,37 +82,3 @@ class HomeController extends StatelessWidget {
   }
 }
 
-// class InitializerWidget extends StatefulWidget {
-//   @override
-//   _InitializerWidgetState createState() => _InitializerWidgetState();
-// }
-
-// class _InitializerWidgetState extends State<InitializerWidget> {
-//   FirebaseAuth _auth;
-
-//   User _user;
-
-//   bool isLoading = true;
-
-//   @override
-//   void initState() {
-//     //
-//     super.initState();
-//     _auth = FirebaseAuth.instance;
-//     _user = _auth.currentUser;
-//     isLoading = false;
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return isLoading
-//         ? Scaffold(
-//             body: Center(
-//               child: CircularProgressIndicator(),
-//             ),
-//           )
-//         : _user == null
-//             ? LoginScreen()
-//             : HomeScreen();
-//   }
-// }

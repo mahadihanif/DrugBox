@@ -1,22 +1,17 @@
 import 'dart:ffi';
-import 'dart:typed_data';
-import 'package:drugboxappv1/Helpers/notificationApi.dart';
-import 'package:drugboxappv1/Views/alarm_screen.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:drugboxappv1/Helpers/notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:intl/intl.dart';
 import 'package:multi_select_flutter/bottom_sheet/multi_select_bottom_sheet_field.dart';
 import 'package:multi_select_flutter/chip_display/multi_select_chip_display.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:multi_select_flutter/util/multi_select_list_type.dart';
-import 'package:provider/provider.dart';
-import '../main.dart';
 
-class MedicineSchedule {
+class pickMedicineSchedule {
   int id;
   String name;
 
-  MedicineSchedule({this.id, this.name});
+  pickMedicineSchedule({this.id, this.name});
 }
 
 class AddAlarm extends StatefulWidget {
@@ -27,29 +22,97 @@ class AddAlarm extends StatefulWidget {
 }
 
 class _AddAlarmState extends State<AddAlarm> {
-  String frequencyChoose = "Once a day";
-  // String dateGroupValue;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  @override
+  void initState() {
+    super.initState();
+    //Requesting for permission
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Allow Notifications'),
+            content: Text('Our app would like to send you notifications'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'Don\'t Allow',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+              TextButton(
+                  onPressed: () => AwesomeNotifications()
+                      .requestPermissionToSendNotifications()
+                      .then((_) => Navigator.pop(context)),
+                  child: Text(
+                    'Allow',
+                    style: TextStyle(
+                      color: Colors.teal,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ))
+            ],
+          ),
+        );
+      }
+    });
+
+    // AwesomeNotifications().createdStream.listen((notification) {
+    //   _scaffoldKey.currentState.showSnackBar(SnackBar(
+    //     content: Text(
+    //       'Notification Created on ${notification.channelKey}',
+    //     ),
+    //   ));
+    // });
+
+    // AwesomeNotifications().actionStream.listen((notification) {
+    //   Navigator.pushAndRemoveUntil(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (_) => AlarmScreen(),
+    //       ),
+    //       (route) => route.isFirst);
+    // });
+  }
+
+  // @override
+  // void dispose() {
+  //   AwesomeNotifications().actionSink.close();
+  //   AwesomeNotifications().createdSink.close();
+  //   super.dispose();
+  // }
+  TextEditingController nameController = TextEditingController();
+  String frequencyChoose = "selec a dose";
+  String dateGroupValue;
 
   TimeOfDay _time1 = TimeOfDay.now();
   TimeOfDay _time2 = TimeOfDay.now();
   TimeOfDay _time3 = TimeOfDay.now();
   DateTime _date = DateTime.now();
 
-  static List<MedicineSchedule> _days = [
-    MedicineSchedule(id: 1, name: "Saturday"),
-    MedicineSchedule(id: 2, name: "Sunday"),
-    MedicineSchedule(id: 3, name: "Monday"),
-    MedicineSchedule(id: 4, name: "Tuesday"),
-    MedicineSchedule(id: 5, name: "Wednesday"),
-    MedicineSchedule(id: 6, name: "Thursday"),
-    MedicineSchedule(id: 7, name: "Friday"),
+  static List<pickMedicineSchedule> _days = [
+    pickMedicineSchedule(id: 1, name: "Saturday"),
+    pickMedicineSchedule(id: 2, name: "Sunday"),
+    pickMedicineSchedule(id: 3, name: "Monday"),
+    pickMedicineSchedule(id: 4, name: "Tuesday"),
+    pickMedicineSchedule(id: 5, name: "Wednesday"),
+    pickMedicineSchedule(id: 6, name: "Thursday"),
+    pickMedicineSchedule(id: 7, name: "Friday"),
   ];
 
   final _items = _days
-      .map((item) => MultiSelectItem<MedicineSchedule>(item, item.name))
+      .map((item) => MultiSelectItem<pickMedicineSchedule>(item, item.name))
       .toList();
-  List<MedicineSchedule> _selectedItems2 = [];
-  List<MedicineSchedule> _selectedItems3 = [];
+  List<pickMedicineSchedule> _selectedItems2 = [];
+  List<pickMedicineSchedule> _selectedItems3 = [];
   final _multiSelectKey = GlobalKey<FormFieldState>();
   // ignore: non_constant_identifier_names
   String HintText = "Select a day";
@@ -59,21 +122,6 @@ class _AddAlarmState extends State<AddAlarm> {
     "Twice a day",
     "Thrice a day",
   ];
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   NotificationApi.init();
-  //   listenNotifications();
-  // }
-
-  void listenNotifications() =>
-      NotificationApi.onNOtifications.stream.listen(onClickedNotification);
-
-  void onClickedNotification(String payload) =>
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => AlarmScreen(),
-      ));
 
   Future<Void> selectDate(BuildContext context) async {
     DateTime datePicker = await showDatePicker(
@@ -85,10 +133,10 @@ class _AddAlarmState extends State<AddAlarm> {
 
   @override
   Widget build(BuildContext context) {
-
-    final _width = MediaQuery.of(context).size.width;
-    final _height = MediaQuery.of(context).size.height;
+    // final _width = MediaQuery.of(context).size.width;
+    // final _height = MediaQuery.of(context).size.height;
     return Scaffold(
+      key: _scaffoldKey,
       // resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.deepPurple[50],
       appBar: AppBar(
@@ -124,6 +172,7 @@ class _AddAlarmState extends State<AddAlarm> {
                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 22),
               ),
               subtitle: TextFormField(
+                controller: nameController,
                 maxLength: 12,
 
                 style: TextStyle(
@@ -220,12 +269,12 @@ class _AddAlarmState extends State<AddAlarm> {
                   Divider(
                     color: Colors.black,
                   ),
-                  MultiSelectBottomSheetField<MedicineSchedule>(
+                  MultiSelectBottomSheetField<pickMedicineSchedule>(
                     initialChildSize: 0.7,
                     maxChildSize: 0.95,
                     listType: MultiSelectListType.CHIP,
                     checkColor: Colors.pink,
-                    selectedColor: Colors.pink,
+                    selectedColor: Colors.teal,
                     selectedItemsTextStyle: TextStyle(
                       fontSize: 25,
                       color: Colors.white,
@@ -304,23 +353,10 @@ class _AddAlarmState extends State<AddAlarm> {
         // backgroundColor: Colors.black,
         child: Icon(Icons.add),
         onPressed: () {
-          //   NotificationApi.showNotification(
-          //     title: "Dinner",
-          //     body: "Today at 6 PM",
-          //     payload: "dinner_6pm",
-          //     scheduleDate: DateTime.now().add(Duration(seconds: 12)),
-          //   );
-          //   final snackBar = SnackBar(
-          //     content: Text(
-          //       "Scheduled in 12 seconds!",
-          //       style: TextStyle(fontSize: 24),
-          //     ),
-          //     backgroundColor: Colors.green,
-          //   );
-
-          //   ScaffoldMessenger.of(context)
-          //     ..removeCurrentSnackBar()
-          //     ..showSnackBar(snackBar);
+          createPlantFoodNotification();
+          print(nameController.text);
+          print("${_time1.hour}:${_time1.minute}");
+          // createWaterReminderNotification();
         },
       ),
     );
@@ -383,7 +419,6 @@ class _AddAlarmState extends State<AddAlarm> {
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Icon(Icons.timer_rounded),
                 ),
-                
                 Text(
                   "${_time1.hour}:${_time1.minute}",
                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 22),
@@ -480,7 +515,7 @@ class _AddAlarmState extends State<AddAlarm> {
           return Theme(
             data: ThemeData(
               primaryColor: Colors.deepPurple,
-              accentColor: Colors.purple,
+              primarySwatch: Colors.purple,
             ),
             child: MediaQuery(
                 data: MediaQuery.of(context)
@@ -489,11 +524,10 @@ class _AddAlarmState extends State<AddAlarm> {
           );
         });
 
-    if (time != null) 
-    setState(() {
-      _time1 = time;
-      
-    });
+    if (time != null)
+      setState(() {
+        _time1 = time;
+      });
   }
 
   pickTime2() async {

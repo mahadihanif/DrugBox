@@ -1,10 +1,14 @@
+import 'package:drugboxappv1/Services/auth_service.dart';
 import 'package:drugboxappv1/Views/medicineList.dart';
 import 'package:drugboxappv1/Views/search_medicine_screen.dart';
 import 'package:drugboxappv1/Views/myMedicineDetailedScreen.dart';
+import 'package:drugboxappv1/widgets/provider_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:page_transition/page_transition.dart';
+
+import 'slideBar.dart';
 
 class MyMedicine extends StatefulWidget {
   @override
@@ -19,12 +23,23 @@ class _MyMedicineState extends State<MyMedicine> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+       drawer: SlideBar(),
       appBar: AppBar(
         title: Center(child: Text('My Medicine')),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Colors.green[600],
         actions: [
-          Center(child: Text("+1")),
-          IconButton(icon: Icon(Icons.notifications), onPressed: () => {}),
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () async {
+              try {
+                AuthService auth = Provider.of(context).auth;
+                await auth.signOut();
+                print("Signed Out!");
+              } catch (e) {
+                print (e);
+              }
+            },
+          )
         ],
         shape: ShapeBorder.lerp(
           RoundedRectangleBorder(
@@ -37,6 +52,8 @@ class _MyMedicineState extends State<MyMedicine> {
           0,
         ),
       ),
+
+      
       body: Container(
           child: StreamBuilder(
         stream: getUsersMedicineList(context),
@@ -162,7 +179,7 @@ class _MyMedicineState extends State<MyMedicine> {
                           ),
                           Spacer(),
                           IconButton(
-                              icon: Icon(Icons.remove_circle),
+                              icon: Icon(Icons.delete,color: Colors.red,),
                               onPressed: () {
                                 var firebaseUser =
                                     FirebaseAuth.instance.currentUser;

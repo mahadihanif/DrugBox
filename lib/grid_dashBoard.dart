@@ -1,19 +1,21 @@
+import 'package:drugboxappv1/Services/auth_service.dart';
 import 'package:drugboxappv1/Views/alarm_screen.dart';
 import 'package:drugboxappv1/Views/medicineList.dart';
-import 'package:drugboxappv1/Views/search_medicine_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:drugboxappv1/widgets/provider_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:drugboxappv1/Views/my_medicine.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'Views/slideBar.dart';
 
 class DashBoard extends StatefulWidget {
+  
   @override
   _DashBoardState createState() => _DashBoardState();
 }
 
 class _DashBoardState extends State<DashBoard> {
-  Material myItems(IconData icon, String heading, int color, Function onTap) {
+  
+  Material myItems(IconData icon, String heading, int color,Function onTap) {
     return Material(
       color: Colors.white70,
       elevation: 14.0,
@@ -85,6 +87,38 @@ class _DashBoardState extends State<DashBoard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       drawer: SlideBar(),
+      // backgroundColor: Colors.deepPurple,
+      appBar: AppBar(
+        title: Center(child: Text('Medicine | DrugBox')),
+        backgroundColor: Colors.green[600],
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () async {
+              try {
+                AuthService auth = Provider.of(context).auth;
+                await auth.signOut();
+                print("Signed Out!");
+              } catch (e) {
+                print (e);
+              }
+            },
+          )
+        ],
+        shape: ShapeBorder.lerp(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(30.0),
+              bottomRight: Radius.circular(30.0),
+            ),
+          ),
+          null,
+          0,
+        ),
+      ),
+
+      
       backgroundColor: Colors.white,
       body: StaggeredGridView.count(
         crossAxisCount: 2,
@@ -110,38 +144,35 @@ class _DashBoardState extends State<DashBoard> {
               // var firebaseUser = FirebaseAuth.instance;
 
               // if (firebaseUser.currentUser != null) {
-              //   return 
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MyMedicine()));
+              //   return
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MyMedicine()));
               // } else {
               //   Scaffold.of(con).showSnackBar(
               //       SnackBar(content: Text("Please login first"),
               //       duration: Duration(seconds: 3),));
-               
+
               // }
             });
           }),
 
           Builder(builder: (BuildContext con) {
-            return 
-            myItems(Icons.alarm, "Medicine Alarm", 0xFF308DB8, () {
+            return myItems(Icons.alarm, "Medicine Alarm", 0xFF308DB8, () {
               // var firebaseUser = 0;
               // var firebaseUser = FirebaseAuth.instance;
 
               // if (firebaseUser.currentUser != null) {
-              //   return 
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AlarmScreen()));
+              //   return
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AlarmScreen()));
               // } else {
               //   Scaffold.of(con).showSnackBar(
               //       SnackBar(content: Text("Please login first"),
               //       duration: Duration(seconds: 3),));
-               
+
               // }
             });
           }),
-
-
 
           // myItems(Icons.alarm, "Medicine Alarm", 0xFF308DB8, () {
           //   Navigator.push(context,

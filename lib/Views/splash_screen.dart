@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:drugboxappv1/Views/home_screen.dart';
 import 'package:drugboxappv1/main.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -42,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     style: TextStyle(
                       fontSize: 56.0,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF76C5D3),
+                      color: Color(0xFF43A047),
                     ),
                     children: <TextSpan>[
                   TextSpan(
@@ -50,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     style: TextStyle(
                         fontSize: 56.0,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFFEB3939)),
+                        color:Color(0xFF76C5D3)),
                   ),
                 ])),
           ],

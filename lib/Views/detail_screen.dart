@@ -15,33 +15,45 @@ class DetailedScreen extends StatefulWidget {
 
 class _DetailedScreenState extends State<DetailedScreen> {
   final firestoreInstance = FirebaseFirestore.instance;
+  final titleColor = Colors.green[600];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: floatinActionButton(),
+      // floatingActionButton: floatinActionButton(),
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Colors.green[600],
         elevation: 0.0,
       ),
-      body: SafeArea(
-          child: Container(
+      body: Container(
         color: Color(0xFFF6F8FC),
         child: Column(
           children: [
-            Flexible(flex: 2, child: topContainer()),
+            Expanded(flex: 2, child: topContainer()),
+            // Flexible(flex: 1, child: buttons()),
             SizedBox(
               height: 10,
             ),
             Flexible(
               flex: 8,
+              fit: FlexFit.tight,
               child: bottomContainer(),
             ),
           ],
         ),
-      )),
+      ),
+    );
+  }
+
+  buttons() {
+    return Row(
+      // mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton(onPressed: () {}, icon: Icon(Icons.alarm), iconSize: 35.0,focusColor: Colors.amber,autofocus: true,color: Colors.white70,),
+        IconButton(onPressed: () {}, icon: Icon(Icons.favorite_border),iconSize: 35.0,),
+      ],
     );
   }
 
@@ -60,7 +72,7 @@ class _DetailedScreenState extends State<DetailedScreen> {
             offset: Offset(0, 3.5),
           )
         ],
-        color: Colors.deepPurple,
+        color: titleColor,
       ),
       width: double.infinity,
       child: Row(
@@ -78,12 +90,14 @@ class _DetailedScreenState extends State<DetailedScreen> {
                     "assets/images/round_tablets.png",
                     height: 40,
                     width: 40,
+                    color: Colors.white70,
                   )
                 else
                   Image.asset(
                     "assets/images/capsule.png",
                     height: 40,
                     width: 40,
+                    color: Colors.white70,
                   )
               ],
             ),
@@ -139,6 +153,13 @@ class _DetailedScreenState extends State<DetailedScreen> {
                     color: Colors.white,
                   ),
                 ),
+                Column(
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    buttons(),
+                  ],
+                ),
               ],
             ),
           ),
@@ -148,121 +169,123 @@ class _DetailedScreenState extends State<DetailedScreen> {
   }
 
   Widget bottomContainer() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.elliptical(50, 27),
-          topRight: Radius.elliptical(50, 27),
-        ),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 5,
-            color: Colors.grey[400],
-            offset: Offset(0, 3.5),
-          )
-        ],
-        color: Colors.deepPurple[50],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.only(top: 15, left: 15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Generic Name",
-              style: TextStyle(
-                fontFamily: "Angel",
-                fontSize: 28,
-                color: Colors.deepPurple,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 3.0),
-              child: Text(
-                widget.medicine.generic_name,
-                style: TextStyle(
-                    fontSize: 18.0, letterSpacing: 1.5, color: Colors.black),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Divider(),
-            Text(
-              "Unit Price",
-              style: TextStyle(
-                fontFamily: "Angel",
-                fontSize: 28,
-                color: Colors.deepPurple,
-              ),
-            ),
-            Row(
-              children: [
-                Icon(IconData(
-                  0x09F3,
-                  fontFamily: "Ic",
-                )),
-                Padding(
-                  padding: const EdgeInsets.only(left: 1.5),
-                  child: Text(
-                    widget.medicine.unit_price+ " Taka",
-                    style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Divider(),
-            Text(
-              "Indications",
-              style: TextStyle(
-                fontFamily: "Angel",
-                fontSize: 28,
-                color: Colors.deepPurple,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 1.5),
-              child: Text(
-                widget.medicine.indications,
-                style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Divider(),
-            Text(
-              "Side Effects",
-              style: TextStyle(
-                fontFamily: "Angel",
-                fontSize: 28,
-                color: Colors.deepPurple,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 1.5),
-              child: Text(
-                widget.medicine.side_effects,
-                style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Divider(),
+    return SingleChildScrollView(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.elliptical(50, 27),
+            topRight: Radius.elliptical(50, 27),
+          ),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 5,
+              color: Colors.grey[400],
+              offset: Offset(0, 3.5),
+            )
           ],
+          color: Colors.teal[50],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 15, left: 15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Generic Name",
+                style: TextStyle(
+                  fontFamily: "Angel",
+                  fontSize: 28,
+                  color: titleColor,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 3.0),
+                child: Text(
+                  widget.medicine.generic_name,
+                  style: TextStyle(
+                      fontSize: 18.0, letterSpacing: 1.5, color: Colors.black),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Divider(),
+              Text(
+                "Unit Price",
+                style: TextStyle(
+                  fontFamily: "Angel",
+                  fontSize: 28,
+                  color: titleColor,
+                ),
+              ),
+              Row(
+                children: [
+                  Icon(IconData(
+                    0x09F3,
+                    fontFamily: "Ic",
+                  )),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 1.5),
+                    child: Text(
+                      widget.medicine.unit_price + " Taka",
+                      style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Divider(),
+              Text(
+                "Indications",
+                style: TextStyle(
+                  fontFamily: "Angel",
+                  fontSize: 28,
+                  color: titleColor,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 1.5),
+                child: Text(
+                  widget.medicine.indications,
+                  style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Divider(),
+              Text(
+                "Side Effects",
+                style: TextStyle(
+                  fontFamily: "Angel",
+                  fontSize: 28,
+                  color: titleColor,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 1.5),
+                child: Text(
+                  widget.medicine.side_effects,
+                  style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Divider(),
+            ],
+          ),
         ),
       ),
     );
@@ -274,7 +297,7 @@ class _DetailedScreenState extends State<DetailedScreen> {
       width: 250,
       child: Material(
         borderRadius: BorderRadius.circular(50),
-        color: Colors.deepPurple, // button color
+        color: titleColor, // button color
         child: InkWell(
           borderRadius: BorderRadius.circular(50),
           splashColor: Colors.white, // splash color
