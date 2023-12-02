@@ -1,9 +1,9 @@
 # drugboxappv1
 You can download the APK from here: https://drive.google.com/file/d/19zCiUs5t_Tmw6PHbpndzkS9gzBItKj95/view?usp=drive_link
 1. Animation Flash Screen
-   ![1](https://github.com/mahadihanif/DrugBox/assets/32836778/fc16087c-7f41-407a-9679-72851228f694)
+   ![Animation](https://github.com/mahadihanif/DrugBox/assets/32836778/b02ec896-bc19-4ce1-ad9a-07f97f65cde9)
 2. Welcome Screen
-   ![1](https://github.com/mahadihanif/DrugBox/assets/32836778/fc16087c-7f41-407a-9679-72851228f694)
+   ![2](https://github.com/mahadihanif/DrugBox/assets/32836778/7939cdef-3e80-476a-93b5-f7768fa77a63)
 3. Welcome Screen Widget
    ![3](https://github.com/mahadihanif/DrugBox/assets/32836778/307c4484-a9f3-44a1-89b6-0ed285cbc210)
 4. Signup Screen
