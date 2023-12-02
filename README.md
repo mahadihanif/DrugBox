@@ -1,5 +1,7 @@
 # drugboxappv1
-
+1. Animation Flash Screen
+   ![1](https://github.com/mahadihanif/DrugBox/assets/32836778/fc16087c-7f41-407a-9679-72851228f694)
+   
 A new Flutter application.
 
 ## Getting Started
