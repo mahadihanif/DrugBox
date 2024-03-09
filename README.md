@@ -1,5 +1,5 @@
 # drugboxappv1
-You can download the APK from here: https://drive.google.com/file/d/19zCiUs5t_Tmw6PHbpndzkS9gzBItKj95/view?usp=drive_link
+You can download the APK from here: https://drive.google.com/file/d/19zCiUs5t_Tmw6PHbpndzkS9gzBItKj95/view?usp=sharing
 1. Animation Flash Screen
    ![Animation](https://github.com/mahadihanif/DrugBox/assets/32836778/b02ec896-bc19-4ce1-ad9a-07f97f65cde9)
    
